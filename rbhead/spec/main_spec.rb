@@ -42,14 +42,35 @@ describe "main" do
   describe "configurable number of lines" do
     let(:text_file_1) { "#{Dir.pwd}/spec/text1.txt" }
     it "returns 11 lines when passed in 11" do
-      rbhead = RbHead.new(text_file, 11)
+      rbhead = RbHead.new(text_file, n: 11)
       text_content_arr.push("Title: The Art of War")
       expect(rbhead.run).to match_array(text_content_arr)
     end
 
-    it "returns all lines if n > file" do
-      rbhead = RbHead.new(text_file_1, 12)
+    it "returns all lines if n > file lines" do
+      rbhead = RbHead.new(text_file_1, n: 12)
       expect(rbhead.run).to match_array(text_content_arr)
+    end
+  end
+
+  describe "configurable number of bytes" do
+    let(:text_file_2) { "#{Dir.pwd}/spec/text2.txt" }
+    it "returns the correct number of bytes if file bytes > ask" do
+      rbhead = RbHead.new(text_file, c: 31)
+      expected_str = "The Project Gutenberg eBook of "
+      expect(rbhead.run).to eq(expected_str)
+    end
+
+    it "returns the correct number of bytes if file bytes < ask" do
+      rbhead = RbHead.new(text_file_2, c: 30)
+      expected_str = "Hello, World"
+      expect(rbhead.run).to eq(expected_str)
+    end
+
+    it "returns the correct number of bytes if file bytes == ask" do
+      rbhead = RbHead.new(text_file_2, c: 12)
+      expected_str = "Hello, World"
+      expect(rbhead.run).to eq(expected_str)
     end
   end
 end
