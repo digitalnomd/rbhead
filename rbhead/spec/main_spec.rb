@@ -38,4 +38,18 @@ describe "main" do
       expect(subject.run).to match_array(text_content_arr)
     end
   end
+
+  describe "configurable number of lines" do
+    let(:text_file_1) { "#{Dir.pwd}/spec/text1.txt" }
+    it "returns 11 lines when passed in 11" do
+      rbhead = RbHead.new(text_file, 11)
+      text_content_arr.push("Title: The Art of War")
+      expect(rbhead.run).to match_array(text_content_arr)
+    end
+
+    it "returns all lines if n > file" do
+      rbhead = RbHead.new(text_file_1, 12)
+      expect(rbhead.run).to match_array(text_content_arr)
+    end
+  end
 end
