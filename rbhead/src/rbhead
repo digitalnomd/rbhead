@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require_relative 'main'
+
+usage = "Usage: rbhead [options] [-f|--file] FILENAME"
+options = {}
+OptionParser.new do |parser|
+  parser.banner = usage
+
+  parser.on("-n LINES", Integer, "Specify the number of lines to output") do |lines|
+    options[:n] = lines
+  end
+
+  parser.on("-c BYTES", Integer, "Specify the number of bytes to output") do |bytes|
+    options[:c] = bytes
+  end
+
+  parser.on("-f", "--file FILENAME", "Required file path") do |filename|
+    options[:file_name] = filename
+  end
+
+  parser.on("-h", "--help", "Prints this help") do
+    puts parser
+    exit
+  end
+end.parse!
+
+unless options.key?(:file_name)
+  puts 'missing file_name'
+  puts usage
+  exit
+end
+
+def run_script(file_name, options)
+  rbhead = nil
+  if options.key?(:n)
+    rbhead = RbHead.new(file_name, n: options[:n])
+  elsif options.key?(:c)
+    rbhead = RbHead.new(file_name, c: options[:c])
+  else
+    rbhead = RbHead.new(file_name)
+  end
+  puts rbhead.run
+end
+
+run_script(options[:file_name], options)
