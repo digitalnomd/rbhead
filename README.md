@@ -1,0 +1,1 @@
+Simple Ruby implementation of the [Unix head](https://en.wikipedia.org/wiki/Head_(Unix)) utility.
