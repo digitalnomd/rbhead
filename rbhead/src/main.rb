@@ -1,5 +1,5 @@
 class RbHead
-  def initialize(file_path, n: 10, c: nil)
+  def initialize(file_path, n: nil, c: nil)
     @file_path = file_path
     @n = n
     @c = c
@@ -7,13 +7,19 @@ class RbHead
 
   def run
     File.open(@file_path, 'r:bom|utf-8') do |file|
-      if @c.nil?
+
+      if !@n.nil?
         lines = file.readlines.first(@n)
         lines.each do |line|
           line.chomp!  # Remove carriage returns and newlines from the end of each line
         end
-      else
+      elsif !@c.nil?
         file.read(@c)
+      else
+        lines = file.readlines
+        lines.each do |line|
+          line.chomp!  # Remove carriage returns and newlines from the end of each line
+        end
       end
     end
   end

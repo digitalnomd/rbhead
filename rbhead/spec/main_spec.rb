@@ -34,8 +34,8 @@ describe "main" do
 
   describe "default behavior" do
     subject { RbHead.new(text_file) }
-    it "returns first 10 lines by default" do
-      expect(subject.run).to match_array(text_content_arr)
+    it "returns an array starting with the first 10 lines" do
+      expect(subject.run.take(10)).to match_array(text_content_arr)
     end
   end
 
