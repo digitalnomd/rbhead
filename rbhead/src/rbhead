@@ -22,24 +22,32 @@ OptionParser.new do |parser|
   end
 end.parse!
 
-options[:file_name] = ARGV[0]
-if options[:file_name].nil? || options[:file_name].empty?
+if ARGV[0].nil? || ARGV[0].empty?
   puts 'missing file_name'
   puts usage
   exit
 end
 
 
-def run_script(file_name, options)
+def run_script(file_path, options, multi_files)
   rbhead = nil
   if options.key?(:n)
-    rbhead = RbHead.new(file_name, n: options[:n])
+    rbhead = RbHead.new(file_path, n: options[:n])
   elsif options.key?(:c)
-    rbhead = RbHead.new(file_name, c: options[:c])
+    rbhead = RbHead.new(file_path, c: options[:c])
   else
-    rbhead = RbHead.new(file_name)
+    rbhead = RbHead.new(file_path)
   end
+
+  if multi_files == true
+    puts "==> #{File.basename(file_path)} <=="
+  end
+
   puts rbhead.run
 end
 
-run_script(options[:file_name], options)
+multi_files = ARGV.length > 1? true: false
+ARGV.each do |file_path|
+  run_script(file_path, options, multi_files)
+  puts
+end
